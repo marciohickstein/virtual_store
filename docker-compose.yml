@@ -1,15 +1,29 @@
-version: '3'
+version: '3.1'
+
 services:
-    postgres:
-        image: postgres:12.1
+    adminer:
+        image: adminer
+        restart: always
         ports:
-            - "5432:5432"
+            - 8080:8080
+
+    db:
+        image: postgres:14
+        restart: always
+        ports:
+            - 5432:5432
+
         environment:
-            POSTGRES_PASSWORD: 12345
+            POSTGRES_USER: seq
+            POSTGRES_PASSWORD: 123
+            POSTGRES_DB: database_development
+
         volumes:
-            - ./postgresql/data:/var/lib/postgresql/data
-            - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+            - "./pg_data:/var/lib/postgresql/data"
+
     api:
+        depends_on:
+            - db
         build:
             context: ./api
             dockerfile: Dockerfile
@@ -17,6 +31,7 @@ services:
             - ./api/:/app
         ports:
             - "3000:3000"
+
     ui:
         build:
             context: ./ui
@@ -25,3 +40,6 @@ services:
             - ./ui:/app
         ports:
             - "3001:3001"
+
+volumes:
+    pg_data:

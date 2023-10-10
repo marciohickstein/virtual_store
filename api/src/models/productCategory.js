@@ -13,14 +13,13 @@ const ProductCategory = database.define('productCategory', {
     timestamps: false
 });
 
+// (async () => {
+//     const productCategory = await ProductCategory.findAll({
+//         include: {
+//             model: Category
+//         },
+//     });
 
-(async () => {
-    const productCategory = await ProductCategory.findAll({
-        include: {
-            model: Category
-        },
-    });
-
-    console.log(productCategory[0].dataValues.category)
-})()
+//     console.log(productCategory[0].dataValues.category)
+// })()
 module.exports = ProductCategory;

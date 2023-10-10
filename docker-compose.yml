@@ -1,0 +1,27 @@
+version: '3'
+services:
+    postgres:
+        image: postgres:12.1
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: 12345
+        volumes:
+            - ./postgresql/data:/var/lib/postgresql/data
+            - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    api:
+        build:
+            context: ./api
+            dockerfile: Dockerfile
+        volumes:
+            - ./api/:/app
+        ports:
+            - "3000:3000"
+    ui:
+        build:
+            context: ./ui
+            dockerfile: Dockerfile
+        volumes:
+            - ./ui:/app
+        ports:
+            - "3001:3001"

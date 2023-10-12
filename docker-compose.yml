@@ -1,45 +1,45 @@
-version: '3.1'
+version: "3.1"
 
 services:
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 
-    db:
-        image: postgres:14
-        restart: always
-        ports:
-            - 5432:5432
+  db:
+    image: postgres:14
+    restart: always
+    ports:
+      - 5432:5432
 
-        environment:
-            POSTGRES_USER: seq
-            POSTGRES_PASSWORD: 123
-            POSTGRES_DB: database_development
+    environment:
+      POSTGRES_USER: seq
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: database_development
 
-        volumes:
-            - "./pg_data:/var/lib/postgresql/data"
+    volumes:
+      - "./pg_data:/var/lib/postgresql/data"
 
-    api:
-        depends_on:
-            - db
-        build:
-            context: ./api
-            dockerfile: Dockerfile
-        volumes:
-            - ./api/:/app
-        ports:
-            - "3000:3000"
+  api:
+    depends_on:
+      - db
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/:/app
+    ports:
+      - "3000:3000"
 
-    ui:
-        build:
-            context: ./ui
-            dockerfile: Dockerfile
-        volumes:
-            - ./ui:/app
-        ports:
-            - "3001:3001"
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    volumes:
+      - ./ui/:/app
+    ports:
+      - "5173:5173"
 
 volumes:
-    pg_data:
+  pg_data:

@@ -1,13 +1,15 @@
-FROM node:18-alpine
-#By default create-react-app sets port to 3000 when you start react app, but I configured to run ui on 8080 (just personal preference) instead of 3000.
-RUN mkdir -p /app/public /app/src
+FROM node:16
+
+RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json .
 
 RUN npm install
 
-EXPOSE 3001 
+COPY . .
+
+EXPOSE 5173
 
 CMD ["npm", "run", "dev"]

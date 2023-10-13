@@ -5,6 +5,7 @@ const categoryRouter = require('./routes/categoryRouter');
 const manufacturerRouter = require('./routes/manufacturerRouter');
 const productRouter = require('./routes/productRouter');
 const productCategoryRouter = require('./routes/productCategoryRouter');
+const imageRouter = require('./routes/imageRouter');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/category', categoryRouter);
 app.use('/manufacturer', manufacturerRouter);
 app.use('/product', productRouter);
 app.use('/product_category', productCategoryRouter);
+app.use('/image', imageRouter);
 
 app.get('/', (req, res) => {
     return res.json({

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ResultList from "./ResultList";
+import ResultCard from "./ResultCard";
 
 function SearchBox() {
 
@@ -22,6 +23,7 @@ function SearchBox() {
             <input type="text" name="searchBox" id="searchBox" /><br/><br/>
             <input type="button" onClick={search} name="searchButton" id="searchButton" value="Search" />
             <ResultList list={list}></ResultList>
+            <ResultCard list={list}></ResultCard>
         </div>
         </div>
     )

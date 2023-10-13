@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "JEST_ENV=true jest",
     "dev": "nodemon -L server.js",
     "debug": "nodemon -L --inspect=0.0.0.0 server.js"
   },

@@ -1,30 +1,36 @@
 import { useState } from "react";
-import ResultList from "./ResultList";
 import ResultCard from "./ResultCard";
+import productServiceApi from "../services/serviceApi";
 
 function SearchBox() {
-
+    const [ text, setText ] = useState('');
     const [ list, setList ] = useState([]);
 
-    async function search() {
-        const response = await fetch('http://localhost:3000/product');
-        const result = await response.json();
+    function handleTextChange(event: any) {
+        setText(event.target.value);
+    }
 
+    function handleEnter(event) {
+        if (event.key == 'Enter') {
+            search();
+        }
+
+    }
+    async function search() {
+        const result = await productServiceApi.getListOfProductsAndImages(text);
         setList(result);
-        console.log(result);
     }
 
     return (
         <div className="text-center">
-        <img src="../../public/logo.png"/>
-        <br/><br/>
-        <div>
-            <label htmlFor="searchBox"></label>
-            <input type="text" name="searchBox" id="searchBox" /><br/><br/>
-            <input type="button" onClick={search} name="searchButton" id="searchButton" value="Search" />
-            <ResultList list={list}></ResultList>
+            <img src="../../public/logo.png" />
+            <br /><br />
+            <div className="m-5">
+                <label htmlFor="searchBox"></label>
+                <input type="text" onKeyDown={handleEnter} onChange={handleTextChange} name="searchBox" id="searchBox" /><br /><br />
+                <input type="button" onClick={search} name="searchButton" id="searchButton" value="Search" />
+            </div>
             <ResultCard list={list}></ResultCard>
-        </div>
         </div>
     )
 }

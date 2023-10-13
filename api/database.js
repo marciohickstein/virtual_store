@@ -1,8 +1,12 @@
 const { Sequelize } = require('sequelize');
 
+let host = process.env.JEST_ENV === 'true' ? 'localhost' : 'db';
+let log =  process.env.JEST_ENV !== 'true';
+
 const database = new Sequelize('database_development', 'seq', '123', {
     dialect: 'postgres',
-    host: 'db',
+    host: host,
+    logging: log,
 });
 
 (async () => {

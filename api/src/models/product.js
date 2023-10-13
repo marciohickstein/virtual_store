@@ -1,5 +1,6 @@
 const { Sequelize } = require('sequelize');
 const Category = require('./category');
+const Image = require('./image');
 const ProductCategory = require('./productCategory');
 
 const database = require('../../database');
@@ -30,6 +31,10 @@ Product.belongsTo(Manufacturer, {
 Manufacturer.hasMany(Product, {
     foreignKey: 'manufacturerId'
 })
+
+Product.hasMany(Image, {
+    foreignKey: 'productId'
+});
 
 // N - M
 Product.belongsToMany(Category, {

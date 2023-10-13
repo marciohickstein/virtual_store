@@ -21,7 +21,7 @@ app.use('/image', imageRouter);
 
 app.get('/', (req, res) => {
     return res.json({
-        message: 'show de bola!'
+        message: 'REST API for Virtual Store'
     })
 })
 

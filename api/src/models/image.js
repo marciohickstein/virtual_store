@@ -15,13 +15,9 @@ const Image = database.define('image', {
     timestamps: false
 });
 
-Image.hasMany(Product, {
-    foreignKey: 'productId'
-});
+// (async () => {
+//     const images = await Image.findAll();
 
-(async () => {
-    const images = await Image.findAll();
-
-    console.log(images);
-})()
+//     console.log(images);
+// })()
 module.exports = Image;

@@ -1,3 +1,5 @@
+const { Op } = require('sequelize');
+
 const { getErrorMessage } = require('../response');
 
 function createController (model, includes = {}) {
@@ -6,7 +8,6 @@ function createController (model, includes = {}) {
 
     (async () => {
         fieldsFromModel = await model.describe();
-        console.log(tableName)
     })()
 
     function validateFields(fields) {
@@ -19,7 +20,6 @@ function createController (model, includes = {}) {
                 }
 
                 const attributes = fieldsFromModel[key];
-                console.log(attributes)
 
                 if (attributes.allowNull === false) {
                     error = `Field ${key} not informed`;
@@ -48,8 +48,22 @@ function createController (model, includes = {}) {
 
     return {
             getAll: async (req, res) => {
+                const query = req.query;
 
-                const items = (await model.findAll(includes)).map((c) => {
+                for (const key in query) {
+                    if (Object.hasOwnProperty.call(query, key)) {
+                        query[key] = {
+                            [Op.iLike]: `${query[key]}%`
+                        };
+                    }
+                }
+
+                const params = {
+                    where: query ? query : {},
+                    include: includes.include
+                }
+
+                const items = (await model.findAll(params)).map((c) => {
                     return c.dataValues;
                 });
                 
@@ -158,8 +172,6 @@ function createController (model, includes = {}) {
                         success: true,
                         message: `Resource was delete successfully`
                     }
-        
-                    console.log(response)
         
                     return res.json(response);
         

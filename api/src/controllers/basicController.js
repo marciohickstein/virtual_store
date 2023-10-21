@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 
-const { getErrorMessage } = require('../response');
+const { getErrorMessage } = require('../utils.js');
 
 function createController (model, includes = {}) {
     const tableName = model.getTableName();
@@ -100,12 +100,9 @@ function createController (model, includes = {}) {
                 const object = createAnObjectWithFields(req.body);        
 
                 try {
-                    await model.create(object);
+                    const result = await model.create(object);
         
-                    return res.status(201).json({
-                        success: true,
-                        message: `${tableName} created`
-                    })
+                    return res.status(201).json(result.dataValues)
                 } catch (error) {
                     return res.status(409).json(getErrorMessage(error.message));
                 }
@@ -173,7 +170,7 @@ function createController (model, includes = {}) {
                         message: `Resource was delete successfully`
                     }
         
-                    return res.json(response);
+                    return res.status(200).json(response);
         
                 } catch (error) {
                     return res.status(500).json(getErrorMessage(error.message));

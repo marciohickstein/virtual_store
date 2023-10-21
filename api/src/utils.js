@@ -1,5 +1,5 @@
 module.exports = {
-    getErrorMessage: (message) => {
+    getErrorResponseMessage: (message) => {
         return {
             error: true,
             message

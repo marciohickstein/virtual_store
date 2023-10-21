@@ -1,6 +1,6 @@
 const Image = require('../models/image');
 const stream = require('stream');
-const { getErrorMessage } = require('../response');
+const { getErrorMessage } = require('../utils.js');
 
 const imageController = {
     getImage: async (req, res) => {

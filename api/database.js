@@ -1,18 +1,26 @@
 const { Sequelize } = require('sequelize');
 
-let host = process.env.JEST_ENV === 'true' ? 'localhost' : 'db';
-let log =  process.env.JEST_ENV !== 'true';
+const isTest = (process.env.JEST_ENV === 'true');
 
-const database = new Sequelize('database_development', 'seq', '123', {
+dbConfig = {
+    host: isTest ? 'localhost' : 'db',
+    port: '5432',
+    database: isTest ? 'database_test' : 'database_development',
+    user: 'seq',
+    password: '123',
+}
+
+const database = new Sequelize(dbConfig.database, dbConfig.user, dbConfig.password, {
     dialect: 'postgres',
-    host: host,
-    logging: log,
+    host: dbConfig.host,
+    logging: !isTest,
 });
 
 (async () => {
     try {
         await database.authenticate();
-        console.log('Connection has been established successfully.');
+        if (!isTest)
+            console.log('Connection has been established successfully.');
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }

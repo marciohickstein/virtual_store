@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "JEST_ENV=true jest",
+    "test": "JEST_ENV=true jest --detectOpenHandles",
+    "integration-tests": "JEST_ENV=true jest tests/integration/ --detectOpenHandles",
+    "unit-tests": "JEST_ENV=true jest tests/unit/ --detectOpenHandles",
     "dev": "nodemon -L server.js",
     "debug": "nodemon -L --inspect=0.0.0.0 server.js"
   },
@@ -21,6 +23,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "sequelize-cli": "^6.6.1"
+    "sequelize-cli": "^6.6.1",
+    "sequelize-mock": "^0.10.2"
   }
 }

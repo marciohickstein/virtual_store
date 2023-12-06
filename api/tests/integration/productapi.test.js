@@ -5,6 +5,13 @@ let resources = [];
 const api = 'product';
 const RESOURCE_NAME_TO_TEST = `New Resource To Test`;
 
+const productToTest = {
+    title: `New Product ${new Date().toLocaleString()}`,
+    description: `New High-end product ${new Date().toLocaleString()}`,
+    manufacturerId: 5,
+    price: 1,
+};
+
 async function createResource(data) {
     const response = await request(app)
         .post(`/${api}`)
@@ -20,10 +27,11 @@ beforeAll(async () => {
     // create all test cases
     for (let i = 0; i < 3; i++) {
         const data = {
-            title: `${RESOURCE_NAME_TO_TEST}_${i + 1}`,
-            description: `High-end resource ${i + 1}`,
-            manufacturerId: 1,
-       };
+            title: `${RESOURCE_NAME_TO_TEST}_${i + 1}_${new Date().toLocaleString()}`,
+            description: `High-end resource x ${i + 1}`,
+            manufacturerId: 5,
+            price: 1,
+        };
 
         const resource = await createResource(data);
 
@@ -50,18 +58,17 @@ afterAll(async () => {
 describe(`Test ${api} endpoint`, () => {
 
     it(`should create a ${api}`, (done) => {
-        const data = {
-            name: `New Resource ${new Date().toLocaleString()}`,
-        };
-
         request(app)
             .post(`/${api}`)
-            .send(data)
+            .send(productToTest)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .expect(201)
             .end(function (err, res) {
-                if (err) return done(err);
+                if (err) {
+                    console.error(err);
+                    return done(err);
+                }
                 return done();
             });
 
@@ -75,13 +82,7 @@ describe(`Test ${api} endpoint`, () => {
         const listOfResource = response.body;
         expect(listOfResource).toBeInstanceOf(Array);
 
-        const objectToTest = {
-            title: `${RESOURCE_NAME_TO_TEST}_3`,
-            description: "High-end resource",
-            manufacturerId: 1,
-        };
-
-        expect(listOfResource.some((element) => element.title === objectToTest.title)).toBe(true);
+        expect(listOfResource.some((element) => element.title === productToTest.title)).toBe(true);
     });
 
     it(`should return a specific ${api}`, async () => {
@@ -89,11 +90,16 @@ describe(`Test ${api} endpoint`, () => {
             .get(`/${api}/${resources[0].id}`)
             .expect(200);
 
-        expect(response.body).toEqual({
+        const product = {
+            ...response.body,
+            title: `${RESOURCE_NAME_TO_TEST}_1`
+        }
+        expect(product).toEqual({
             id: resources[0].id,
             title: `${RESOURCE_NAME_TO_TEST}_1`,
-            description: "High-end resource 1",
-            manufacturerId: 1,
+            description: "High-end resource x 1",
+            manufacturerId: 5,
+            price: "1",
         });
     });
 

@@ -5,7 +5,8 @@ const sequelizeMock = new SequelizeMock();
 const ManufacturerMock = sequelizeMock.define('manufacturer', {
     id: 1,
     name: 'manufacturer 1',
-    info: 'company 1'
+    info: 'company 1',
+    ein: 0
 }, {
     timestamps: false
 });
@@ -17,7 +18,7 @@ ManufacturerMock.$queryInterface.$useHandler((query, queryOptions, done) => {
         const result = [];
         
         for (let x = 1; x <= limit; x++)
-            result.push(ManufacturerMock.build({ id: x, name: 'manufacturer ' + x, info: 'company ' + x }));
+            result.push(ManufacturerMock.build({ id: x, name: 'manufacturer ' + x, info: 'company ' + x, ein: 0 }));
 
         return result;
     }

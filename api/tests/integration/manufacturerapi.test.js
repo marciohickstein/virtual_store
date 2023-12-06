@@ -21,6 +21,8 @@ beforeAll(async () => {
     for (let i = 0; i < 3; i++) {
         const data = {
             name: `${RESOURCE_NAME_TO_TEST}_${i + 1}`,
+            info: '',
+            ein: 0
         };
 
         const resource = await createResource(data);
@@ -87,8 +89,9 @@ describe(`Test ${api} endpoint`, () => {
 
         expect(response.body).toEqual({
             id: resources[0].id,
-            "info": null,
-            name: RESOURCE_NAME_TO_TEST + '_1'
+            "info": "",
+            name: RESOURCE_NAME_TO_TEST + '_1',
+            ein: 0
         });
     });
 

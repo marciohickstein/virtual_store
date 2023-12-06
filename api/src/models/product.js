@@ -4,6 +4,7 @@ const Image = require('./image');
 const ProductCategory = require('./productCategory');
 
 const database = require('../../database');
+
 const Manufacturer = require('./manufactor');
 
 const Product = database.define('product', {
@@ -16,7 +17,8 @@ const Product = database.define('product', {
         type: Sequelize.STRING,
         unique: true
     },
-    description: Sequelize.STRING
+    description: Sequelize.STRING,
+    price: Sequelize.DECIMAL,
 },{
     timestamps: false
 })

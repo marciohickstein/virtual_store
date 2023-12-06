@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 
-const { getErrorMessage } = require('../utils.js');
+const { getErrorResponseMessage } = require('../utils.js');
 
 function createController (model, includes = {}) {
     const tableName = model.getTableName();
@@ -14,6 +14,7 @@ function createController (model, includes = {}) {
         let error = "";
 
         for (const key in fieldsFromModel) {
+
             if (Object.hasOwnProperty.call(fieldsFromModel, key)) {
                 if (key === 'id') {
                     continue;
@@ -22,8 +23,10 @@ function createController (model, includes = {}) {
                 const attributes = fieldsFromModel[key];
 
                 if (attributes.allowNull === false) {
-                    error = `Field ${key} not informed`;
-                    return error;
+                    if (!fields[key]) {
+                        error = `Field ${key} not informed`;
+                        return error;
+                    }
                 }
             }
         }
@@ -74,37 +77,37 @@ function createController (model, includes = {}) {
                 const { id } = req.params;
         
                 if (!id) {
-                    return res.status(400).json(getErrorMessage(`id not informed`));
+                    return res.status(400).json(getErrorResponseMessage(`id not informed`));
                 }
         
                 try {
                     const item = await model.findByPk(Number(id));
                     if (item === null) {
-                        return res.status(404).json(getErrorMessage(`${tableName} not found`));
+                        return res.status(404).json(getErrorResponseMessage(`${tableName} not found`));
                     }
         
                     return res.json(item.dataValues);
                 } catch (error) {
-                    return res.status(500).json(getErrorMessage(error.message));
+                    return res.status(500).json(getErrorResponseMessage(error.message));
                 }
         
             },
         
             create: async (req, res) => {
                 let error = validateFields(req.body);
-
+                
                 if (error && error.length > 0) {
-                    return res.status(400).json(getErrorMessage(error));
+                    return res.status(400).json(getErrorResponseMessage(error));
                 }
 
                 const object = createAnObjectWithFields(req.body);        
-
                 try {
                     const result = await model.create(object);
         
                     return res.status(201).json(result.dataValues)
                 } catch (error) {
-                    return res.status(409).json(getErrorMessage(error.message));
+                    console.log(error)
+                    return res.status(409).json(getErrorResponseMessage(error.message));
                 }
             },
         
@@ -112,13 +115,13 @@ function createController (model, includes = {}) {
                 const { id } = req.params;
         
                 if (!id) {
-                    return res.status(400).json(getErrorMessage(`id not informed`));
+                    return res.status(400).json(getErrorResponseMessage(`id not informed`));
                 }
         
                 let error = validateFields(req.body);
 
                 if (error && error.length > 0) {
-                    return res.status(400).json(getErrorMessage(error));
+                    return res.status(400).json(getErrorResponseMessage(error));
                 }
 
                 const object = createAnObjectWithFields(req.body);        
@@ -127,7 +130,7 @@ function createController (model, includes = {}) {
                     const category = await model.findByPk(Number(id));
         
                     if (category === null) {
-                        return res.status(404).json(getErrorMessage(`${tableName} not found`));
+                        return res.status(404).json(getErrorResponseMessage(`${tableName} not found`));
                     }
         
                     await model.update(object, {
@@ -141,7 +144,7 @@ function createController (model, includes = {}) {
                         message: ` ${tableName} updated`
                     })
                 } catch (error) {
-                    return res.status(500).json(getErrorMessage(error.message));
+                    return res.status(500).json(getErrorResponseMessage(error.message));
                 }
             },
         
@@ -149,14 +152,14 @@ function createController (model, includes = {}) {
                 const { id } = req.params;
         
                 if (!id) {
-                    return res.status(400).json(getErrorMessage(`id not informed`));
+                    return res.status(400).json(getErrorResponseMessage(`id not informed`));
                 }
         
                 try {
                     const item = await model.findByPk(Number(id));
         
                     if (item === null) {
-                        return res.status(404).json(getErrorMessage(`${tableName} not found`));
+                        return res.status(404).json(getErrorResponseMessage(`${tableName} not found`));
                     }
         
                     await model.destroy({
@@ -173,7 +176,7 @@ function createController (model, includes = {}) {
                     return res.status(200).json(response);
         
                 } catch (error) {
-                    return res.status(500).json(getErrorMessage(error.message));
+                    return res.status(500).json(getErrorResponseMessage(error.message));
                 }
         
             },

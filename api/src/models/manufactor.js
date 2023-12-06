@@ -12,7 +12,12 @@ const Manufacturer = database.define('manufacturer', {
         type: DataTypes.STRING,
         unique: true
     },
-    info: DataTypes.STRING
+    info: DataTypes.STRING,
+    ein: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+    }    
 }, {
     timestamps: false
 })

@@ -8,7 +8,8 @@ const productExample = {
     id: 1,
     title: 'product 1',
     description: 'description 1',
-    manufacturerId: 1
+    manufacturerId: 1,
+    price: 1
 }
 
 describe('test products', () => {

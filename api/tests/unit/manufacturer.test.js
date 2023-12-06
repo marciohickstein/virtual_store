@@ -9,7 +9,8 @@ describe('test manufacturers', () => {
         const newManufacturer = {
             id: 4,
             name: 'Dell',
-            info: 'XXX'
+            info: 'XXX',
+            ein: 0
         }
 
         const result = await Manufacturer.create(newManufacturer);
@@ -28,7 +29,8 @@ describe('test manufacturers', () => {
         expect(manufactures[1]).toEqual({
             id: 2,
             name: 'manufacturer 2',
-            info: 'company 2'
+            info: 'company 2',
+            ein: 0
         })
     })
 
@@ -42,7 +44,8 @@ describe('test manufacturers', () => {
         expect(result[0].dataValues).toEqual({
             id: 1,
             name: 'manufacturer 1',
-            info: 'company 1'
+            info: 'company 1',
+            ein: 0
         })
     })
 

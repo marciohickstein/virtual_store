@@ -7,7 +7,7 @@ const controller = createController(Product, {
     include: {
       model: Manufacturer, // The associated model to include
     }
-});
+  }, [ 'title'] );
 
 productRouter.get('/', controller.getAll);
 productRouter.get('/:id', controller.getOne);

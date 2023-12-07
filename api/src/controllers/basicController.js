@@ -2,10 +2,10 @@ const { Op } = require('sequelize');
 
 const { getErrorResponseMessage } = require('../utils.js');
 
-function createController (model, includes = {}) {
+function createController (model, includes = {}, order = []) {
     const tableName = model.getTableName();
     let fieldsFromModel = {};
-
+    
     (async () => {
         fieldsFromModel = await model.describe();
     })()
@@ -56,14 +56,15 @@ function createController (model, includes = {}) {
                 for (const key in query) {
                     if (Object.hasOwnProperty.call(query, key)) {
                         query[key] = {
-                            [Op.iLike]: `${query[key]}%`
+                            [Op.iLike]: `%${query[key]}%`
                         };
                     }
                 }
 
                 const params = {
                     where: query ? query : {},
-                    include: includes.include
+                    include: includes.include,
+                    order
                 }
 
                 const items = (await model.findAll(params)).map((c) => {

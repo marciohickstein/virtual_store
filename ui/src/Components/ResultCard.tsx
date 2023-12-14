@@ -11,7 +11,7 @@ function ResultCard(props: any) {
             {props.list.map((item: any) => (
                 <div key={item.id}>
                     <div className="card">
-                        <img height="80" width="80" src={item.image} className="card-img-top" alt="..." />
+                        <img loading="lazy" height="80" width="80" src={item.image} className="card-img-top" alt="..." />
                         <div className="card-body">
                             <h5 className="card-title">{item.title}</h5>
                             <p className="card-text">{item.description}</p>
